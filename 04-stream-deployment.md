@@ -107,8 +107,6 @@ And the code to decode the message:
 
 ```python
 def transfrom_input(event):
-    """Transforms the input payload."""
-  
     # Extract the message body, expected to be a JSON representation of a
     # dictionary, and extract the fields from that dictionary.
     print('Recieved event:', event)
@@ -149,8 +147,7 @@ Now we have to load the model and make the prediction. We will use the `mlflow` 
 ![](./images/mlflow-model-path.png)
 
 ```python
-def load_model(run_id):
-    
+def load_model(run_id): 
     logged_model = f'gs://neuefische-mlflow-artifacts/1/{run_id}/artifacts/model'
     # Load model as a PyFuncModel.
     loaded_model = mlflow.pyfunc.load_model(logged_model)
@@ -168,7 +165,6 @@ Last but not least we have to call all the functions and publish the prediction 
 ```python
 @functions_framework.cloud_event
 def predict_duration(cloudevent):
-    
     # Get environment variables
     RUN_ID = os.environ.get("RUN_ID")
     PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -184,7 +180,6 @@ def predict_duration(cloudevent):
     # make prediction
     print('Making prediction...')
     prediction = apply_model(model, prediction_input)
-
     # publish prediction
     message = {
         "ride_id": metadata['ride_id'],
