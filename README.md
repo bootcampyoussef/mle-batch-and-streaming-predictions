@@ -28,6 +28,14 @@ Follow the steps in [04_stream_deployment](./04_stream_deployment.md) and the py
 
 ## Environment
 
+You need the google cloud sdk installed and configured. If you don't have it installed follow the instructions [here](https://cloud.google.com/sdk/docs/install) or use homebrew on mac:
+
+```bash
+brew install --cask google-cloud-sdk
+```
+
+Python environment:
+
 ```bash
 pyenv local 3.11.3
 python -m venv .venv
