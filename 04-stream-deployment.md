@@ -41,7 +41,7 @@ A second topic will be created to receive the predictions from the function but 
 1. Go to the [GCP Console](https://console.cloud.google.com/)
 2. Go to `Pub/Sub` and select `Topics`
 3. Click on `Create Topic`
-4. Name the topic `taxi_predictions`
+4. Name the topic `taxi_predictions` and click create
 5. Click on `Export to BigQuery` this will create a subscription to the topic and create a table in BigQuery with the same name as the topic
 ![](./images/export-bq.png)
 6. Name the subscription `taxi_predictions_bq`
@@ -49,13 +49,16 @@ A second topic will be created to receive the predictions from the function but 
 8. Create a table name `green_taxi_predictions` in BigQuery
 9. Click on `+ Share` and add the `PubSub service account` with the role `BigQuery Data Editor` ![](./images/share.png) 
 (the service account will be created automatically and should have the following name:
-service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com
-the project number can be found in the GCP Console under `IAM & Admin` -> `Settings`)
+service-<project number>@gcp-sa-pubsub.iam.gserviceaccount.com
+the project number can be found in the GCP Console under `IAM & Admin` -> `Settings`)<br>
+The service account exists, but is not visible to you before you grant a role on it. This is because the Pub/Sub service account does not live in your project. Since the service account doesn’t belong to your project, it will not show up in your IAM > Service Accounts tab and only appears in your project’s IAM Permissions page once you’ve assigned it a role in your project.
+
+
 ![](./images/add-sa.png)
 
-10. Edit the table and add a field name `data` with the type `JSON`.
-11. Back in the `Pub/Sub` topic add the table name. ![](./images/subscription.png)
-12. Click on `Create`
+1.  Edit the table and add a field name `data` with the type `JSON`.
+2.  Back in the `Pub/Sub` topic add the table name. ![](./images/subscription.png)
+3.  Click on `Create`
 
 
 
