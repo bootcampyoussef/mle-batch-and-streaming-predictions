@@ -31,7 +31,6 @@ gcloud config set project <your-project-id>
 
 **Topic**
 
-
 ```bash
 gcloud pubsub topics create taxi_data
 ```
@@ -216,7 +215,7 @@ gcloud functions deploy taxi_ride_duration \
 --entry-point=predict_duration \
 --max-instances=3 \
 --trigger-topic taxi_data \
---set-env-vars "RUN_ID=MLFLOW_RUNID, GCP_PROJECT=YOUR_GCP_PROJECT_ID,RESULT_TOPIC=taxi_prediction"
+--set-env-vars "RUN_ID=MLFLOW_RUNID,GCP_PROJECT=YOUR_GCP_PROJECT_ID,RESULT_TOPIC=taxi_prediction"
 
 ```
 

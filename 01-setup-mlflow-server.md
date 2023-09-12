@@ -66,9 +66,11 @@ In order to store the MLFlow experiments, you need to create a PostgreSQL instan
 3. Choose PostgreSQL
 4. Give it a name: `mlflow-metadata-store`
 5. Enter a password  
-6. Region: `eu-west3 (Frankfurt)`
-7. Zone: `Single zone`
-8. Customize your instance: 
+6. configuration: `sandbox`
+![](./images/sql-config.png)
+7. Region: `eu-west3 (Frankfurt)`
+8. Zone: `Single zone`
+9. Customize your instance: 
     - Storgae
         - Storage type: `SSD`
         - Storage capacity: `10 GB`
@@ -77,14 +79,14 @@ In order to store the MLFlow experiments, you need to create a PostgreSQL instan
         - Private IP: `On` with Network: `default`
          (if you are asked to set up a connection, click on `Set up connection` and follow the instructions, choose `Use an automatically allocated IP range`)
          ![set up connection](./images/sql.png)
-9. Click on Create  
-10. Once the instance is created, we need to create a database. Click on the instance name and go to Databases
-11. Click on Create database
-12. Give it a name: `mlflow-db`
-13. Click on Create
-14. Create a user: Click on Users and click on Add user account
-15. Give it a name: `mlflow-user`
-16. Enter a password
+10. Click on Create  
+11. Once the instance is created, we need to create a database. Click on the instance name and go to Databases
+12. Click on Create database
+13. Give it a name: `mlflow-db`
+14. Click on Create
+15. Create a user: Click on Users and click on Add user account
+16. Give it a name: `mlflow-user`
+17. Enter a password
 
 ## ssh into the Compute Engine instance
 
