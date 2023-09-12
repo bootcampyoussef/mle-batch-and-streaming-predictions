@@ -12,19 +12,19 @@ In the end you will have a fully functional MLFlow server and an understanding h
 
 ### MLFlow Server
 
-Follow the steps in [01_setup_mlflow_server](./01_setup_mlflow_server.md) to setup your own MLFlow server on GCP.
+Follow the steps in [01-setup-mlflow-server](./01-setup-mlflow-server.md) to setup your own MLFlow server on GCP.
 
 ### Train the Model
 
-Follow the steps in [02_train_ml_model](./02_train_ml_model.ipynb) to train a simple model on the `Green Taxi Trip Records` dataset from the [NYC Taxi and Limousine Commission](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page) and how to track the experiments with `MLFlow`.
+Follow the steps in [02-train-ml-model](./02-train-ml-model.ipynb) to train a simple model on the `Green Taxi Trip Records` dataset from the [NYC Taxi and Limousine Commission](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page) and how to track the experiments with `MLFlow`.
 
 ### Batch Prediction Service
 
-Follow the steps in [03_batch_deployment](./03_batch_deployment.ipynb) and the python scripts in [src/batch](./src/batch) to setup a batch prediction service with `prefect` and `MLFlow`.
+Follow the steps in [03-batch-deployment](./03-batch-deployment.ipynb) and the python scripts in [src/batch](./src/batch) to setup a batch prediction service with `prefect` and `MLFlow`.
 
 ### Stream Prediction Service
 
-Follow the steps in [04_stream_deployment](./04_stream_deployment.md) and the python scripts in [src/stream](./src/stream) to setup a stream prediction service with `Google Cloud Function`, `MLFlow` and `PubSub`.
+Follow the steps in [04-stream-deployment](./04-stream-deployment.md) and the python scripts in [src/stream](./src/stream) to setup a stream prediction service with `Google Cloud Function`, `MLFlow` and `PubSub`.
 
 ## Environment
 
