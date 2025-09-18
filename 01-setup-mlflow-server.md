@@ -101,7 +101,6 @@ First we will check if the VM has access to the database. Run the following comm
 ```bash
 sudo apt-get update
 sudo apt-get install postgresql-client
-gcloud sql instances list
 ```
 
 And than:
@@ -146,7 +145,7 @@ echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 exec $SHELL
 ```
 
-Now we will install Python 3.10.11:
+Now we will install Python 3.10.11. The first line of the code below might take 10-20 minutes:
 
 ```bash
 pyenv install 3.10.11
