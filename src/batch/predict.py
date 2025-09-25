@@ -66,9 +66,9 @@ def apply_model(filename, run_id, output_filename,MLFLOW_TRACKING_URI):
 @click.option("--filename", help="Path to the input parquet file")
 @click.option("--run_id", help="MLflow run ID")
 @click.option("--output_filename", help="Path to the output parquet file")
-@click.option("--MLFLOW_TRACKING_URI", help="MLflow tracking URI")
+@click.option("--mlflow_tracking_uri", help="MLflow tracking URI")
 @click.option("--google_sa_key", help="Path to the Google SA key")
-def run(filename, run_id, output_filename,MLFLOW_TRACKING_URI, google_sa_key):
+def run(filename, run_id, output_filename, mlflow_tracking_uri, google_sa_key):
     filename = filename
     output_filename = output_filename
     run_id = run_id
@@ -76,7 +76,7 @@ def run(filename, run_id, output_filename,MLFLOW_TRACKING_URI, google_sa_key):
     apply_model(filename,
                 run_id,
                 output_filename,
-                MLFLOW_TRACKING_URI)
+                mlflow_tracking_uri)
     
     
 
