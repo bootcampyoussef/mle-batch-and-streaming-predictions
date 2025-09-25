@@ -110,12 +110,13 @@ sudo apt-get install postgresql-client
 And than:
 
 ```bash
-psql -h CLOUD_SQL_INTERNAL_IP_ADDRESS -U USERNAME DATABASENAME
+psql -h CLOUD_SQL_PRIVATE_IP_ADDRESS -U USERNAME DATABASENAME
 ```
 After entering your password you will see a screen as shown below and when you type in `\l` you should see `mlflow-db` which was the empty database created before then press q.
 Type in `exit` to come out of the psql shell.
 
 ![connecting Cloud SQL from Compute Engine](./images/cloud-SQL-conn-check.png)
+
 
 
 ## Install the MLFlow server
@@ -152,6 +153,7 @@ source mlflow/bin/activate
 pip install --upgrade pip
 pip install mlflow boto3 google-cloud-storage psycopg2-binary
 ```
+Before we start the server we need to create also a GCS bucket to store the MLFlow artifacts. Follow the instructions in the [next section](#create-a-gcs-bucket) to create a GCS bucket.
 
 And finally we will start the MLFlow server:
 
@@ -167,7 +169,7 @@ mlflow server \
 
 Now if you go to `http://<compute engine external ip>:5000` you should see the MLFlow UI.
 
-In case you want to run the MLFloe server in the backgroung you can use 'nohup' like this:
+In case you want to run the MLFlow server in the backgroung you can use `nohup` like this:
 
 ```bash
 nohup mlflow server \
@@ -197,9 +199,12 @@ In order to store the MLFlow artifacts, you need to create a GCS bucket. You can
 5. Location: `europe-west3 (Frankfurt)`
 6. Click on Create
 
+Once the bucket is created you can create a folder inside the bucket to store the MLFlow artifacts.
+Now you can use the bucket name and the folder name in the `--default-artifact-root` parameter when starting the MLFlow server.
+
 ## Cloud Credentials
 
-In order to access the GCS bucket, you need to create a service account and download the credentials. You can follow the instructions [here](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to create a service account and download the credentials.
+In order to access the GCS bucket from your compiuter, you need to create a service account and download the credentials. You can follow the instructions [here](https://cloud.google.com/iam/docs/creating-managing-service-accounts) to create a service account and download the credentials.
 
 1. In GCP go to IAM & Admin (side panel on the left) then go to Service Accounts
 2. Click on Service accounts
