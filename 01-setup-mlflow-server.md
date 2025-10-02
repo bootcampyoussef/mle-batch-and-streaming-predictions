@@ -67,7 +67,7 @@ In order to store the MLFlow experiments, you need to create a PostgreSQL instan
 4. Give it a name: `mlflow-metadata-store`
 5. Enter a password
 6. configuration: `sandbox`
-   ![](./images/sql-config.png)
+   ![img](./images/sql-config.png)
 7. Region: `europe-west3 (Frankfurt)`
 8. Zone: `Single zone`
 9. Customize your instance:
@@ -79,14 +79,16 @@ In order to store the MLFlow experiments, you need to create a PostgreSQL instan
      - Private IP: `On` with Network: `default`
        (if you are asked to set up a connection, click on `Set up connection` and follow the instructions, choose `Use an automatically allocated IP range`)
        ![set up connection](./images/sql.png)
-10. Click on Create Instance (this might take a few minutes)
-11. Once the instance is created, we need to create a database. Click on the instance name and go to Databases
-12. Click on Create database
-13. Give it a name: `mlflow-db`
-14. Click on Create
-15. Create a user: Click on Users (side panel on the left) and click on Add user account
-16. Give it a name: `mlflow-user`
-17. Enter a password
+10. In Data Protection uncheck `Automated daily backups`
+    ![backups](./images/backup.png)
+11. Click on Create Instance (this might take a few minutes)
+12. Once the instance is created, we need to create a database. Click on the instance name and go to Databases
+13. Click on Create database
+14. Give it a name: `mlflow-db`
+15. Click on Create
+16. Create a user: Click on Users (side panel on the left) and click on Add user account
+17. Give it a name: `mlflow-user`
+18. Enter a password
 
 ## ssh into the Compute Engine instance
 
@@ -199,7 +201,7 @@ In order to store the MLFlow artifacts, you need to create a GCS bucket. You can
 5. Location: `europe-west3 (Frankfurt)`
 6. Click on Create
 
-Once the bucket is created you can create a folder inside the bucket to store the MLFlow artifacts.
+Once the bucket is created you can create a folder inside the bucket to store the MLFlow artifacts for example `models`.
 Now you can use the bucket name and the folder name in the `--default-artifact-root` parameter when starting the MLFlow server.
 
 ## Cloud Credentials
@@ -213,4 +215,4 @@ In order to access the GCS bucket from your compiuter, you need to create a serv
 5. Click on Add key
 6. Click on Create new key
 7. Choose JSON in the pop up window and click on Create
-8. Save the credentials file to your local machine (if you add it to your git repo, make sure to add it to your `.gitignore` file)
+8. Save the credentials file to your local machine (if you add it to your git repo , you can add it into the `sa_key/` folder. This folder has been already added to the `.gitignore` file)
