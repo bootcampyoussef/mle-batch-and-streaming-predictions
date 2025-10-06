@@ -61,7 +61,12 @@ def save_results(df, y_pred, run_id, model_name, file_path_predictions):
 
 
 # Main function to apply the model and save predictions
-def apply_model(file_path_input, mlflow_tracking_uri, run_id, model_name, file_path_predictions):
+def apply_model(file_path_input, 
+                mlflow_tracking_uri, 
+                run_id, 
+                model_name, 
+                file_path_predictions):
+    
     df = read_dataframe(file_path_input)
     dicts = preprocess(df)
     
