@@ -1,28 +1,40 @@
-from prefect.deployments import Deployment
-from prefect.server.schemas.schedules import CronSchedule
-from predict_prefect import run
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+from datetime import datetime, timezone, timedelta
+from flow_prefect import run
+from prefect.client.schemas.schedules import RRuleSchedule, CronSchedule 
 
+
+# Load environment variables from a .env file
 load_dotenv()
 
-MLFLOW_TRACKING_URI=os.getenv("MLFLOW_TRACKING_URI")
-RUN_ID=os.getenv("RUN_ID")
-BUCKET_NAME=os.getenv("BUCKET_NAME")
-GOOGLE_SA_KEY=os.getenv("GOOGLE_SA_KEY")
-
-
-deployment = Deployment.build_from_flow(
-    flow=run,
-    name="ride_duration_prediction",
-    parameters={
-        "bucket_name": BUCKET_NAME,
-        "run_id": RUN_ID,
-        "google_sa_key": GOOGLE_SA_KEY,
-        "MLFLOW_TRACKING_URI": MLFLOW_TRACKING_URI
-    },
-    schedule=CronSchedule(cron="0 3 2 * *"),
-    tags=["batch", "predict", "prefect"]
+# Create a schedule that runs every 2 months on the same day and time as now + 2 minutes
+# This is to give you time to start the prefect server and run this script
+now = datetime.now(timezone.utc) + timedelta(minutes=2)
+rrule_string = (
+    f"DTSTART:{now.strftime('%Y%m%dT%H%M%SZ')}\n"
+    f"FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY={now.day};BYHOUR={now.hour};BYMINUTE={now.minute}"
 )
 
-deployment.apply()
+
+schedule_rule = RRuleSchedule(rrule=rrule_string)
+
+
+# Start the flow with a schedule
+run.serve(
+    name="ride_duration_prediction",
+    schedules=[
+        schedule_rule,
+        ],
+    parameters={
+        "bucket_name": os.getenv("BUCKET_NAME"),
+        "mlflow_tracking_uri": os.getenv("MLFLOW_TRACKING_URI"),
+        "run_id": os.getenv("RUN_ID"),
+        "model_name": os.getenv("MODEL_NAME"),
+        "google_sa_key": os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+        "data_reference_date": os.getenv("DATA_REFERENCE_DATE"),
+    },
+    tags=["batch", "predict", "prefect"],
+)
+
+
