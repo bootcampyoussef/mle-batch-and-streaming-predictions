@@ -453,33 +453,10 @@ gcloud functions describe taxi_ride_duration \
 ```
 
 This command outputs the **service account email** that the function runs as at runtime.
-That identity is what Google Cloud uses to authenticate all API calls your function makes (for example, reading from Cloud Storage or publishing to Pub/Sub).
-
-Since this service account controls what your function can access, you must ensure it has the correct **IAM roles** assigned.
-
-
-| Purpose                                 | Recommended Role                                         |
-| --------------------------------------- | -------------------------------------------------------- |
-| Read model artifacts from Cloud Storage | `roles/storage.objectViewer`                             |
-| Publish prediction messages to Pub/Sub  | `roles/pubsub.publisher`                                 |
-
-You can grant these roles with:
-
-```bash
-gcloud projects add-iam-policy-binding <GCP_PROJECT> \
-  --member="serviceAccount:<SERVICE_ACCOUNT_EMAIL>" \
-  --role="roles/storage.objectViewer"
-
-gcloud projects add-iam-policy-binding <GCP_PROJECT> \
-  --member="serviceAccount:<SERVICE_ACCOUNT_EMAIL>" \
-  --role="roles/pubsub.publisher"
-```
-Replace `<SERVICE_ACCOUNT_EMAIL>` with the email you retrieved from the first command and `<GCP_PROJECT>` with your GCP project ID.
-
 
 Cloud Functions (Gen 2) run on **Cloud Run**, which blocks all requests unless the caller has permission to invoke it.
 
-Even though your function is triggered by **Pub/Sub**,Cloud Run still needs to know **who is allowed** to call it.  
+Even though your function is triggered by **Pub/Sub**, Cloud Run still needs to know **who is allowed** to call it.  
 That’s why you must grant the **Invoker role (`roles/run.invoker`)** to the service account that should trigger or call the function.
 
 Run this command in your terminal:
