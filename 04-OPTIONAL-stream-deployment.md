@@ -442,24 +442,11 @@ gcloud functions deploy taxi_ride_duration \
 ```
 You should now see the function in the `Cloud Functions` section of the GCP Console.
 
-Once you deploy the Cloud Function, check which **service account** it uses to identify itself when executing code.
+When you deploy a **Cloud Function (Gen 2)** with a **Pub/Sub trigger**, Google Cloud automatically creates an **Eventarc trigger** behind the scenes. That Eventarc trigger, in turn, creates its **own Pub/Sub subscription** to the topic you specified—you don’t need to create it manually. Each Eventarc trigger has an associated **service account** that it uses to pull messages from the Pub/Sub topic and invoke your Cloud Function. Because Cloud Functions (Gen 2) run on **Cloud Run**, which only allows authorized identities to call them, this **Eventarc service account** must have the **`roles/run.invoker`** permission so it can successfully invoke your function when new messages arrive.
 
-Run the following command in your terminal:
+To grant the necessary permission, you need to identify the **service account** associated with the **Eventarc trigger** for your Cloud Function. You can find it in the **Google Cloud Console** by opening your Cloud Function and checking the **Trigger** tab — the service account used by Eventarc is listed there.
 
-```bash
-gcloud functions describe taxi_ride_duration \
-  --region=europe-west3 \
-  --format="value(serviceConfig.serviceAccountEmail)"
-```
-
-This command outputs the **service account email** that the function runs as at runtime.
-
-Cloud Functions (Gen 2) run on **Cloud Run**, which blocks all requests unless the caller has permission to invoke it.
-
-Even though your function is triggered by **Pub/Sub**, Cloud Run still needs to know **who is allowed** to call it.  
-That’s why you must grant the **Invoker role (`roles/run.invoker`)** to the service account that should trigger or call the function.
-
-Run this command in your terminal:
+Once you have the service account email, run the following command to grant it the `Cloud Run Invoker` role on your Cloud Function:
 
 ```bash
 gcloud functions add-invoker-policy-binding taxi_ride_duration \
