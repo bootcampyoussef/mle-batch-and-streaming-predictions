@@ -71,10 +71,3 @@ Please make sure you have forked the repo and set up a new virtual environment. 
 ## IMPORTANT
 
 Don't forget to **STOP** the `Cloud Services` after you are done, especially the `SQL Instance`. You can always start them again when you need them.
-
-## Diagram 
-
-When you are done with the exercise this is the structure you will have created
-
- ![diagram](./images/diagram.png)
-
