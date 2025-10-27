@@ -20,8 +20,8 @@ In order to access the MLflow server from your local machine, you need to create
 1. In GCP click on **VPC network**
 2. Go to **Firewall**
 3. Click on **Create firewall rule**
-4. Give it a **name**: `mlflow-tracking-server`
-5. Set **Logs** to `On`
+4. Give it a name: `mlflow-tracking-server`
+5. Logs: `On`
 6. Network: `default`
 7. Priority: `1000`
 8. Direction of traffic: `Ingress`
@@ -110,30 +110,33 @@ sudo apt-get install postgresql-client
 And then:
 
 ```bash
-psql -h CLOUD_SQL_PRIVATE_IP_ADDRESS -U USERNAME DATABASENAME
+psql -h <CLOUD_SQL_PRIVATE_IP_ADDRESS> -U <USERNAME> <DATABASENAME>
 ```
 
-After entering your password you will see a screen as shown below and when you type in `\l` you should see `mlflow-db` which was the empty database created before. Then press `q`.
+To find the `CLOUD_SQL_PRIVATE_IP_ADDRESS` go to Cloud SQL > Instances and search for the **Private IP address** of the instance we just created. Use the `USERNAME` and the `DATABASENAME` that we created in the step before.
+
+After entering your password you will see a screen as shown below and when you type in `\l` you should see `mlflow-db` which is the empty database created before. Then press `q`.  
+
 Type in `exit` to come out of the psql shell.
 
 ![connecting Cloud SQL from Compute Engine](./images/cloud-SQL-conn-check.png)
 
 ## Install the MLflow server
 
-First we will install pyenv:
+First we will install the necessary tools:
 
 ```bash
 sudo apt-get update
 sudo apt-get install git python3-pip make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev
 ```
 
-Then we will install pyenv:
+Then we will install **pyenv**:
 
 ```bash
 curl https://pyenv.run | bash
 ```
 
-Now we will add pyenv to our path:
+and we will add it to our path:
 
 ```bash
 echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc
@@ -143,7 +146,7 @@ echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 exec $SHELL
 ```
 
-Now we will install Python 3.11.3. The first line of the code below might take 10-20 minutes:
+Now we will install Python 3.11.3. The first line of the code below **might take 10-20 minutes**:
 
 ```bash
 pyenv install 3.11.3
@@ -154,31 +157,34 @@ pip install --upgrade pip
 pip install mlflow boto3 google-cloud-storage psycopg2-binary
 ```
 
-Before we start the server we need to create also a GCS bucket to store the **MLflow artifacts**. Follow the instructions in the [next section](#create-a-gcs-bucket) to create a GCS bucket.
+Before we start the server we need to create also a **GCS bucket** to store the **MLflow artifacts**. Follow the instructions in the [next section](#create-a-gcs-bucket) to create a GCS bucket.
 
-And finally we will start the MLflow server:
+And finally we will start the **MLflow server**:
 
 ```bash
 mlflow server \
  -h 0.0.0.0 \
  -p 5000 \
- --backend-store-uri postgresql://<db-user>:<db-password@<db-internal-ip>:5432/<db-name> \
- --default-artifact-root gs://<gcs bucket>/<folder>
+ --backend-store-uri postgresql://<user>:<password>@<db-internal-ip>:5432/<db-name> \
+ --default-artifact-root gs://<GCS bucket>/<folder> \
+ --allowed-hosts <vm-external-ip>:5000
 ```
 
-+ `--backend-store-uri` is the connection string to the PostgreSQL database. It has the following format: `postgresql://<db-user>:<db-password@<db-internal-ip>:5432/<db-name>`
-+ `--default-artifact-root` is the GCS bucket where the MLFlow artifacts will be stored. It has the following format: `gs://<gcs bucket>/<folder>`
++ `--backend-store-uri` is the connection string to the PostgreSQL database. It has the following format: `postgresql://<user>:<password>@<db-internal-ip>:5432/<db-name>`. The **db-internal-ip** is the one we used before (CLOUD_SQL_PRIVATE_IP_ADDRESS).
++ `--default-artifact-root` is the GCS bucket where the MLflow artifacts will be stored. It has the following format: `gs://<GCS bucket>/<folder>`
++ `-- allowed-hosts` specifies which Host headers MLflow will trust, letting you access the UI from those IPs or hostnames without triggering security errors. The **vm-external-ip** you will find in Compute Engine > VM instances > **External IP**.
 
-Now if you go to `http://<compute engine external ip>:5000` you should see the MLflow UI.
+Now if you go to `http://<vm-external-ip>:5000` you should see the MLflow UI.
 
-In case you want to run the MLflow server in the backgroung you can use `nohup` like this:
+In case you want to run the MLflow server in the background you can use `nohup` like this:
 
 ```bash
 nohup mlflow server \
  -h 0.0.0.0 \
  -p 5000 \
- --backend-store-uri postgresql://<db-user>:<db-password@<db-internal-ip>:5432/<db-name> \
- --default-artifact-root gs://<gcs bucket>/<folder> &
+ --backend-store-uri postgresql://<user>:<password>@<db-internal-ip>:5432/<db-name> \
+ --default-artifact-root gs://<GCS bucket>/<folder> \
+ --allowed-hosts <vm-external-ip>:5000 &
 ```
 
 The `nohup` command will run the MLflow server in the background and the `&` at the end will allow you to continue using the terminal. The output will be written to a file called `nohup.out`.
@@ -186,35 +192,33 @@ The `nohup` command will run the MLflow server in the background and the `&` at 
 To stop the MLflow server you can use the following command to find the process id and kill it:
 
 ```bash
-ps ef | grep mlflow
+ps -ef | grep mlflow
 kill <process id> 
 ```
 
-In the above command replace `<process id>` with the actual process id of the MLflow uvicorn server.
+In the above command replace `<process id>` with the actual process ID of the **MLflow uvicorn server**.
 
 ## Create a GCS bucket
 
 In order to store the MLflow artifacts, you need to create a GCS bucket. You can follow the instructions [here](https://cloud.google.com/storage/docs/creating-buckets).
 
-1. In GCP click on **Buckets**
+1. In GCP go to **Cloud Storage** > **Buckets**
 2. Click on **Create**
-3. Give it a name: `mlflow-artifacts` (has to be unique)
+3. Give it a name: `mlflow-artifacts` (it has to be unique *globally*, so add something in the end of the name to make it unique)
 4. Location type: `Region`
 5. Location: `europe-west3 (Frankfurt)`
 6. Click on **Create**
 
-Once the bucket is created you can create a folder inside the bucket to store the MLflow artifacts for example `models`.
+Once the bucket is created you can **create a folder** inside the bucket to store the MLflow artifacts, for example `models`.
 Now you can use the bucket name and the folder name in the `--default-artifact-root` parameter when starting the MLflow server.
 
 ## Cloud Credentials
 
 In order to access the GCS bucket from your computer, you need to create a service account and download the credentials. You can follow the instructions [here](https://cloud.google.com/iam/docs/creating-managing-service-accounts).
 
-1. In GCP go to **IAM & admin** (side panel on the left), then go to **Service accounts**
-2. Click on Service accounts
-3. Click on the `Compute Engine default service account` under the Name column
-4. Under Actions click on the three dots and click on Manage keys
-5. Click on **Add key**
-6. Click on **Create new key**
-7. Choose JSON in the pop up window and click on **Create**
-8. Save the credentials file to your local machine (if you add it to your git repo, you can add it into the `sa_key/` folder. This folder has been already added to the `.gitignore` file)
+1. In GCP go to **IAM and admin** > **Service accounts**
+2. Click on the `Compute Engine default service account` under the Name column
+3. Under **Actions** click on the three dots and click on **Manage keys**
+4. Click on **Add key** > **Create new key**
+5. Choose JSON in the pop up window and click on **Create**
+6. Save the credentials file to your local machine (if you add it to your git repo, you can add it into the `sa_key/` folder. This folder has been already added to the `.gitignore` file)
