@@ -19,22 +19,22 @@ rrule_string = (
 
 schedule_rule = RRuleSchedule(rrule=rrule_string)
 
-
-# Start the flow with a schedule
-run.serve(
-    name="ride_duration_prediction",
-    schedules=[
-        schedule_rule,
-        ],
-    parameters={
-        "bucket_name": os.getenv("BUCKET_NAME"),
-        "mlflow_tracking_uri": os.getenv("MLFLOW_TRACKING_URI"),
-        "run_id": os.getenv("RUN_ID"),
-        "model_name": os.getenv("MODEL_NAME"),
-        "google_sa_key": os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
-        "data_reference_date": os.getenv("DATA_REFERENCE_DATE"),
-    },
-    tags=["batch", "predict", "prefect"],
-)
+if __name__ == "__main__":
+    # Start the flow with a schedule
+    run.serve(
+        name="ride_duration_prediction",
+        schedules=[
+            schedule_rule,
+            ],
+        parameters={
+            "bucket_name": os.getenv("BUCKET_NAME"),
+            "mlflow_tracking_uri": os.getenv("MLFLOW_TRACKING_URI"),
+            "run_id": os.getenv("RUN_ID"),
+            "model_name": os.getenv("MODEL_NAME"),
+            "google_sa_key": os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+            "data_reference_date": os.getenv("DATA_REFERENCE_DATE"),
+        },
+        tags=["batch", "predict", "prefect"],
+    )
 
 
