@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: mlops
+      POSTGRES_PASSWORD: mlops
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+
+  mlflow:
+    # Keep the tracking server local and lightweight for the teaching repo.
+    image: python:3.11-slim
+    depends_on:
+      - postgres
+    working_dir: /app
+    command:
+      - /bin/sh
+      - -lc
+      - |
+        pip install --no-cache-dir mlflow==3.11.1 psycopg2-binary==2.9.11 && \
+        mkdir -p /app/storage/mlartifacts && \
+        mlflow server \
+          --host 0.0.0.0 \
+          --port 5000 \
+          --backend-store-uri postgresql://mlops:mlops@postgres:5432/mlflow \
+          --serve-artifacts \
+          --artifacts-destination /app/storage/mlartifacts
+    ports:
+      - "5001:5000"
+    volumes:
+      - ../:/app
+
+  prefect:
+    # Run a self-hosted Prefect server against the same local Postgres instance.
+    image: prefecthq/prefect:3.6.27-python3.11
+    depends_on:
+      - postgres
+    environment:
+      PREFECT_API_DATABASE_CONNECTION_URL: postgresql+asyncpg://mlops:mlops@postgres:5432/prefect
+    command:
+      - /bin/sh
+      - -lc
+      - |
+        pip install --no-cache-dir asyncpg==0.31.0 && \
+        prefect server start --host 0.0.0.0
+    ports:
+      - "4200:4200"
+
+volumes:
+  postgres_data:
