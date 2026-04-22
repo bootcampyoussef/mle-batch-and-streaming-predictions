@@ -31,51 +31,48 @@ flowchart TD
 
 ## Create The Environment
 
-If you use `pyenv`, you can pin the repository to the expected Python version first:
+### macOS
 
 ```bash
-pyenv local 3.11.3
-```
-
-### `macOS` / Linux
-
-Create and activate a standard library `venv`:
-
-```bash
-python3.11 --version
-python3.11 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-python --version
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+```
+
+### Windows
+
+For `PowerShell` CLI:
+
+```powershell
+py -3 -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+For `Git-Bash` CLI:
+
+```bash
+py -3 -m venv .venv
+source .venv/Scripts/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+Then copy the default local environment file:
+
+```bash
 cp .env.example .env
 ```
 
-### `Windows` PowerShell
+For PowerShell, use:
 
 ```powershell
-py -3.11 --version
-py -3.11 -m venv .venv
-.venv\Scripts\Activate.ps1
-python --version
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ```
 
-### `Windows` Git-Bash
-
-```bash
-py -3.11 --version
-py -3.11 -m venv .venv
-source .venv/Scripts/activate
-python --version
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-cp .env.example .env
-```
-
-After activation, `python --version` should report `3.11.3`. After copying `.env.example` to `.env`, keep the default local URLs unless you intentionally change the local stack ports.
+After copying `.env.example` to `.env`, keep the default local URLs unless you intentionally change the local stack ports.
 
 ## Check The Environment Before Docker
 

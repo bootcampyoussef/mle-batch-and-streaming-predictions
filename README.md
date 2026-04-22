@@ -42,55 +42,50 @@ This repository contains Mermaid diagrams. If you want them to render in VS Code
 
 ## Environment
 
-Please make sure you **use this repository as a template** and set up a new virtual environment. This repository is tested with `Python 3.11.3`.
+Please make sure you **use this repository as a template** and set up a new virtual environment.
 
-If you use `pyenv`, you can pin the repo to the expected interpreter first:
-
-```bash
-pyenv local 3.11.3
-```
-
-### `macOS` / Linux
-
-Create and activate a standard library `venv`:
+### macOS
 
 ```bash
-python3.11 --version
-python3.11 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-python --version
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-cp .env.example .env
 ```
 
-### `Windows`
+### Windows
 
 For `PowerShell` CLI:
 
 ```powershell
-py -3.11 --version
-py -3.11 -m venv .venv
+py -3 -m venv .venv
 .venv\Scripts\Activate.ps1
-python --version
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-Copy-Item .env.example .env
 ```
 
 For `Git-Bash` CLI:
 
 ```bash
-py -3.11 --version
-py -3.11 -m venv .venv
+py -3 -m venv .venv
 source .venv/Scripts/activate
-python --version
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+```
+
+Then copy the default local environment file:
+
+```bash
 cp .env.example .env
 ```
 
-After activation, `python --version` should report `3.11.3`. The [requirements.txt](requirements.txt) file contains the libraries and dependencies needed to run the examples and lesson workflows in this repository. After copying `.env.example` to `.env`, keep the default local URLs unless you intentionally change the local stack ports.
+For PowerShell, use:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+The [requirements.txt](requirements.txt) file contains the libraries and dependencies needed to run the examples and lesson workflows in this repository. After copying `.env.example` to `.env`, keep the default local URLs unless you intentionally change the local stack ports.
 
 The most important environment variables are:
 
