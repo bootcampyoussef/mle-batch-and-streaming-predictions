@@ -39,22 +39,11 @@ pyenv local 3.11.3
 
 ### `macOS` / Linux
 
-Use the standard library `venv` flow first:
+Create and activate a standard library `venv`:
 
 ```bash
 python3.11 --version
 python3.11 -m venv .venv
-source .venv/bin/activate
-python --version
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-cp .env.example .env
-```
-
-If `python3.11 -m venv .venv` fails because that interpreter was installed without a working `ensurepip`, use this tested fallback instead. This fallback requires `uv`.
-
-```bash
-uv venv --python 3.11.3 --seed .venv
 source .venv/bin/activate
 python --version
 python -m pip install --upgrade pip
