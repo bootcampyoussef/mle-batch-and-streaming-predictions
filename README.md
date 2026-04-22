@@ -7,7 +7,7 @@ You will train a regression model on the NYC Green Taxi dataset, register it in 
 
 ```mermaid
 flowchart LR
-    A["Create Python 3.11.3 environment"] --> B["Start local Postgres, MLflow, and Prefect"]
+    A["Create Python environment"] --> B["Start local Postgres, MLflow, and Prefect"]
     B --> C["Train and register a model in MLflow"]
     C --> D["Run batch scoring with Prefect"]
     C --> E["Serve online predictions with FastAPI"]
@@ -35,10 +35,7 @@ When the stack is running, the local endpoints are:
 
 ## Mermaid Diagrams
 
-This repository contains Mermaid diagrams. If you want them to render in VS Code, we recommend installing the `Markdown Preview Mermaid Support` extension:
-
-- [Install in VS Code](vscode:extension/bierner.markdown-mermaid)
-- [View on Marketplace](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+This repository contains Mermaid diagrams. They render on GitHub and in any Markdown previewer that supports Mermaid.
 
 ## Environment
 

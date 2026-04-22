@@ -7,7 +7,6 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
-.rumdl_cache/
 
 # Virtual environments and local configuration
 .env
