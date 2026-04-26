@@ -44,7 +44,7 @@ def prepare_dataframe(df: pd.DataFrame, *, include_target: bool) -> pd.DataFrame
 
 
 def assign_ride_ids(df: pd.DataFrame) -> pd.DataFrame:
-    """Add ride IDs when they are not present in the input dataset."""
+    """Add ride IDs if they are not present in the input dataset."""
     prepared = df.copy()
     if RIDE_ID_COLUMN not in prepared:
         prepared[RIDE_ID_COLUMN] = generate_ride_ids(len(prepared))
@@ -52,7 +52,7 @@ def assign_ride_ids(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def to_model_records(df: pd.DataFrame) -> list[dict]:
-    """Convert a feature dataframe into the dict records expected by the model."""
+    """Convert a feature DataFrame into the dict records expected by the model."""
     return df[FEATURE_COLUMNS].to_dict(orient="records")
 
 

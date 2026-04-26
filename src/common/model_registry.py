@@ -29,12 +29,12 @@ def resolve_model_uri(
     run_id: str | None = None,
     artifact_path: str = "model",
 ) -> str:
-    """Resolve a model URI from either a direct URI, a run ID, or the registry.
+    """Resolve a model URI from either a direct URI, a run ID, or the registry."""
 
-    The teaching repo uses this one resolution path everywhere so the
-    training script, batch flow, and API all agree on which model version
-    should be active.
-    """
+    # The repository uses this one resolution path everywhere so the
+    # training script, batch flow, and API all agree on which model version
+    # should be active.
+    
     configure_tracking(tracking_uri)
 
     # Keep the override order explicit: direct URI first, then a run artifact,

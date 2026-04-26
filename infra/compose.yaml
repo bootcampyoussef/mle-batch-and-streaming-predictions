@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16
+    image: postgres:17
     environment:
       POSTGRES_USER: mlops
       POSTGRES_PASSWORD: mlops
@@ -12,7 +12,6 @@ services:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
 
   mlflow:
-    # Keep the tracking server local and lightweight for the teaching repo.
     image: python:3.11-slim
     depends_on:
       - postgres
@@ -35,8 +34,7 @@ services:
       - ../:/app
 
   prefect:
-    # Run a self-hosted Prefect server against the same local Postgres instance.
-    image: prefecthq/prefect:3.6.27-python3.11
+    image: prefecthq/prefect:3.6.25-python3.11
     depends_on:
       - postgres
     environment:

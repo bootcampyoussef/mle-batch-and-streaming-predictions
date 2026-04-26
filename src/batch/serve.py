@@ -9,7 +9,7 @@ def main() -> None:
     cron = os.getenv("BATCH_CRON", "0 6 1 * *")
 
     # This helper mirrors the batch lesson: create a simple deployment that
-    # learners can inspect and trigger from the local Prefect UI.
+    # can be inspected and triggered from the local Prefect UI.
     score_batch_flow.serve(
         name="green-taxi-batch",
         cron=cron,

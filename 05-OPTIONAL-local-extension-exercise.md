@@ -1,4 +1,4 @@
-# 05. Optional Exercise: Extend The Local Pipeline
+# Optional Exercise: Extend the Local Pipeline
 
 Use this exercise after finishing the training, batch, and online inference lessons.
 
@@ -16,10 +16,10 @@ Improve the local pipeline so you can compare a stronger model against the linea
 
 ## Deliverables
 
-- a short note describing the new model you tried;
-- the validation metric comparison between baseline and updated model;
-- one saved batch prediction file produced with the updated model;
-- one sample online prediction response using the updated model.
+- A short note describing the new model you tried.
+- The validation metric comparison between baseline and updated model.
+- One saved batch prediction file produced with the updated model.
+- One sample online prediction response using the updated model.
 
 ## Hints
 

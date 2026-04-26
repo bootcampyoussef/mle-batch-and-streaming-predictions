@@ -13,10 +13,10 @@ def sample_dataframe() -> pd.DataFrame:
     return pd.DataFrame(
         {
             "lpep_pickup_datetime": pd.to_datetime(
-                ["2023-01-01T10:00:00", "2023-01-01T11:00:00"]
+                ["2025-01-01T10:00:00", "2025-01-01T11:00:00"]
             ),
             "lpep_dropoff_datetime": pd.to_datetime(
-                ["2023-01-01T10:10:00", "2023-01-01T11:22:00"]
+                ["2025-01-01T10:10:00", "2025-01-01T11:22:00"]
             ),
             "PULocationID": [1, 2],
             "DOLocationID": [3, 4],

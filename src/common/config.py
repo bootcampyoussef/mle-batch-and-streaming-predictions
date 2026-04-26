@@ -27,7 +27,7 @@ def resolve_project_path(
 
 @dataclass(frozen=True)
 class ProjectSettings:
-    """Centralized settings used by the teaching scripts and notebooks."""
+    """Centralized settings used by the scripts and notebooks."""
 
     mlflow_tracking_uri: str = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5001")
     prefect_api_url: str = os.getenv("PREFECT_API_URL", "http://127.0.0.1:4200/api")
@@ -41,11 +41,11 @@ class ProjectSettings:
     model_artifact_path: str = os.getenv("MODEL_ARTIFACT_PATH", "model")
     train_data_uri: str = os.getenv(
         "TRAIN_DATA_URI",
-        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2023-01.parquet",
+        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-01.parquet",
     )
     batch_input_uri: str = os.getenv(
         "BATCH_INPUT_URI",
-        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2023-02.parquet",
+        "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-02.parquet",
     )
     batch_output_dir: Path = resolve_project_path(
         os.getenv("BATCH_OUTPUT_DIR"), default=PROJECT_ROOT / "data" / "predictions"

@@ -25,7 +25,7 @@ from prefect import flow, get_run_logger, task  # noqa: E402
 
 
 def default_output_path(output_dir: Path) -> Path:
-    """Create a timestamped parquet path for one batch scoring run."""
+    """Create a timestamped Parquet path for one batch scoring run."""
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return output_dir / f"batch_predictions_{timestamp}.parquet"
 
