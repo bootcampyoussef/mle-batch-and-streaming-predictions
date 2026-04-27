@@ -1,4 +1,4 @@
-# Batch And Stream Predictions
+# Batch and Stream Predictions
 
 In this repository, you will explore a local-first MLOps workflow using [MLflow](https://mlflow.org/), [Prefect](https://docs.prefect.io/), and [FastAPI](https://fastapi.tiangolo.com/).
 You will train a regression model on the NYC Green Taxi dataset, register it in MLflow, orchestrate a batch prediction workflow with Prefect, and expose the same model through a lightweight online inference API.
@@ -57,8 +57,17 @@ python -c "import fastapi, mlflow, prefect; print('Core imports look good.')"
 
 ### 2. Start the local services
 
+**`macOS`** / **`Linux`** / **`Git Bash`**
+
 ```bash
 mkdir -p storage/mlartifacts data/predictions
+docker compose -f infra/compose.yaml up -d
+```
+
+**`PowerShell`**
+
+```powershell
+New-Item -ItemType Directory -Path storage/mlartifacts, data/predictions -Force
 docker compose -f infra/compose.yaml up -d
 ```
 
@@ -123,7 +132,7 @@ New-Item -ItemType Directory -Path data -Force
 New-Item -ItemType File -Path data/.gitkeep -Force
 ```
 
-The reset command removes local MLflow runs, registered model metadata, batch prediction parquet files, and your copied `.env`. Run the setup steps again before restarting the lessons.
+The reset command removes local MLflow runs, registered model metadata, batch prediction Parquet files, and your copied `.env`. Run the setup steps again before restarting the lessons.
 
 ## Learning Objectives
 
@@ -132,7 +141,7 @@ By the end of this repository, you should be able to:
 - Explain how a local-first MLOps workflow connects model training, registration, batch scoring, and online inference.
 - Prepare taxi trip features and train a baseline regression pipeline for trip-duration prediction.
 - Track experiments and register reusable model versions with MLflow.
-- Run a local Prefect-backed batch workflow that scores a parquet dataset and saves the prediction output.
+- Run a local Prefect-backed batch workflow that scores a Parquet dataset and saves the prediction output.
 - Understand how scheduled Prefect runs reuse the latest registered MLflow model.
 - Serve the registered model through a FastAPI prediction endpoint and compare outputs for different request scenarios.
 - Extend the project by testing a stronger model and updating the active prediction target in MLflow.
