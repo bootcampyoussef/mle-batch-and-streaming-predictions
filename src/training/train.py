@@ -71,7 +71,6 @@ def main(
     random_state: int,
     run_name: str,
 ) -> None:
-
     # Create the experiment on demand and log a single baseline pipeline.
     configure_tracking(tracking_uri)
     experiment_id = ensure_experiment(experiment_name)
