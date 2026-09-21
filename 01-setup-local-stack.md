@@ -91,8 +91,8 @@ The most important environment variables are:
 Run this command from the project root:
 
 ```bash
-python --version
-python -c "import fastapi, mlflow, prefect; print('Core imports look good.')"
+uv run python --version
+uv run python -c "import fastapi, mlflow, prefect; print('Core imports look good.')"
 ```
 
 You should see the active Python version and a short success message confirming that `FastAPI`, `MLflow` and `Prefect` all import correctly.
@@ -149,8 +149,8 @@ docker compose -f infra/compose.yaml ps
 Run these commands from the project root:
 
 ```bash
-python -m src.training.train
-python -m src.batch.flow
+uv run python -m src.training.train
+uv run python -m src.batch.flow
 ```
 
 If both commands complete, the environment is ready for the notebooks. The batch command should create a Parquet file under `data/predictions/`.

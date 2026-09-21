@@ -17,8 +17,8 @@ from src.common.model_registry import (
 )
 
 # Prefect reads its API URL from the process environment when a flow starts.
-# Loading the repo settings here keeps direct `python -m ...` and notebook runs
-# attached to the local Prefect server defined in `.env`.
+# Loading the repo settings here keeps direct `uv run python -m ...` and
+# notebook runs attached to the local Prefect server defined in `.env`.
 os.environ.setdefault("PREFECT_API_URL", get_settings().prefect_api_url)
 
 from prefect import flow, get_run_logger, task  # noqa: E402
