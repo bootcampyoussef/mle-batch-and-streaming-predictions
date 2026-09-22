@@ -89,7 +89,7 @@ uv run python -m src.batch.flow
 
 These two commands run the pipeline end to end, so they check what the `curl` and import checks above cannot: that a run and a model version reach Postgres, that the artifact store accepts the model, and that Prefect executes a flow.
 
-The **training** command registers `green-taxi-duration` version 1. Open the MLflow UI at <http://127.0.0.1:5001> to see the run and the registered model. Notebook 02 covers the same steps in detail and registers version 2, so two versions there are expected.
+On a fresh stack, the **training** command registers `green-taxi-duration` version 1. Open the MLflow UI at <http://127.0.0.1:5001> to see the run and the registered model. Running Notebook 02 next registers version 2; each additional training run registers another version.
 
 The **batch** command scores the input file and writes a Parquet file under `data/predictions/`.
 
@@ -111,4 +111,4 @@ This stack keeps the focus on model lifecycle concepts:
 - repeatable batch scoring,
 - lightweight online inference.
 
-The next notebook uses the running MLflow server to train and register the first model version.
+The next notebook uses the running MLflow server to train and register another model version.
