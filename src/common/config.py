@@ -1,3 +1,4 @@
+import logging
 import os
 from dataclasses import dataclass
 from pathlib import Path
@@ -5,6 +6,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Show only errors from mlflow.utils; skip info and warning messages.
+logging.getLogger("mlflow.utils").setLevel(logging.ERROR)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
