@@ -37,6 +37,7 @@ def prepare_dataframe(df: pd.DataFrame, *, include_target: bool) -> pd.DataFrame
         prepared = prepared[
             (prepared[TARGET_COLUMN] >= 1) & (prepared[TARGET_COLUMN] <= 60)
         ]
+        prepared = prepared[prepared["trip_distance"].between(0.1, 100)]
 
     prepared["trip_route"] = prepared["PULocationID"] + "_" + prepared["DOLocationID"]
     return prepared
