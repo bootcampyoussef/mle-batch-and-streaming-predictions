@@ -78,7 +78,7 @@ You should also be able to see the running containers with:
 docker compose -f infra/compose.yaml ps
 ```
 
-## Run the training and batch steps (sanity check)
+## Sanity Check — Run the training and batch steps
 
 Run these commands from the project root:
 
@@ -87,7 +87,13 @@ uv run python -m src.training.train
 uv run python -m src.batch.flow
 ```
 
-If both commands complete, the environment is ready for the notebooks. The batch command should create a Parquet file under `data/predictions/`.
+These two commands run the pipeline end to end, so they check what the `curl` and import checks above cannot: that a run and a model version reach Postgres, that the artifact store accepts the model, and that Prefect executes a flow.
+
+The **training** command registers `green-taxi-duration` version 1. Open the MLflow UI at <http://127.0.0.1:5001> to see the run and the registered model. Notebook 02 covers the same steps in detail and registers version 2, so two versions there are expected.
+
+The **batch** command scores the input file and writes a Parquet file under `data/predictions/`.
+
+If both commands complete, the environment is ready for the notebooks.
 
 ## What each service does
 
