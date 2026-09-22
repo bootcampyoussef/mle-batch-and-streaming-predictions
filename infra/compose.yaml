@@ -12,7 +12,7 @@ services:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
 
   mlflow:
-    image: python:3.11-slim
+    image: python:3.13-slim
     depends_on:
       - postgres
     working_dir: /app
@@ -20,7 +20,7 @@ services:
       - /bin/sh
       - -lc
       - |
-        pip install --no-cache-dir mlflow==3.11.1 psycopg2-binary==2.9.11 && \
+        pip install --no-cache-dir mlflow==3.16.1 psycopg2-binary==2.9.13 && \
         mkdir -p /app/storage/mlartifacts && \
         mlflow server \
           --host 0.0.0.0 \
@@ -34,7 +34,7 @@ services:
       - ../:/app
 
   prefect:
-    image: prefecthq/prefect:3.6.25-python3.11
+    image: prefecthq/prefect:3.8.6-python3.13
     depends_on:
       - postgres
     environment:
@@ -43,7 +43,6 @@ services:
       - /bin/sh
       - -lc
       - |
-        pip install --no-cache-dir asyncpg==0.31.0 && \
         prefect server start --host 0.0.0.0
     ports:
       - "4200:4200"

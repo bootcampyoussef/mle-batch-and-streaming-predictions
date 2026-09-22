@@ -1,8 +1,7 @@
 import uuid
-from typing import Iterable
+from collections.abc import Iterable
 
 import pandas as pd
-
 
 CATEGORICAL_COLUMNS = ["PULocationID", "DOLocationID"]
 FEATURE_COLUMNS = ["trip_route", "trip_distance"]
@@ -38,6 +37,7 @@ def prepare_dataframe(df: pd.DataFrame, *, include_target: bool) -> pd.DataFrame
         prepared = prepared[
             (prepared[TARGET_COLUMN] >= 1) & (prepared[TARGET_COLUMN] <= 60)
         ]
+        prepared = prepared[prepared["trip_distance"].between(0.1, 100)]
 
     prepared["trip_route"] = prepared["PULocationID"] + "_" + prepared["DOLocationID"]
     return prepared

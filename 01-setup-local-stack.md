@@ -4,10 +4,10 @@ This guide sets up the local infrastructure used by the rest of the repository. 
 
 ## What you will start
 
-- `Postgres` for MLflow and Prefect metadata
-- `MLflow` for experiment tracking and model registration
-- `Prefect` for batch orchestration
-- `FastAPI` for online predictions
+- `Postgres` for MLflow and Prefect metadata.
+- `MLflow` for experiment tracking and model registration.
+- `Prefect` for batch orchestration.
+- `FastAPI` for online predictions.
 
 ## Architecture
 
@@ -23,103 +23,37 @@ flowchart TD
     H --> D
 ```
 
-## Prerequisites
+## Before you start
 
-- Python `3.11.3`
-- Docker Desktop or another Docker-compatible runtime
-- Enough disk space to pull the Docker images used by the local stack
+Complete the **Setup** section in the [README](README.md) first. It covers creating the Python environment with `uv sync` and copying `.env.example` to `.env`.
 
-## Create the Python environment
-
-### `macOS` / `Linux`
-
-```bash
-pyenv local 3.11.3
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-### `Windows`
-
-For `Git Bash` CLI:
-
-```bash
-pyenv local 3.11.3
-python -m venv .venv
-source .venv/Scripts/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-For `PowerShell` CLI:
-
-```powershell
-pyenv local 3.11.3
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-Then copy the default local environment file:
-
-**`macOS`** / **`Linux`** / **`Git Bash`**
-
-```bash
-cp .env.example .env
-```
-
-**`PowerShell`**
-
-```powershell
-Copy-Item .env.example .env
-```
-
-After copying `.env.example` to `.env`, keep the default local URLs unless you intentionally change the local stack ports.
-
-The most important environment variables are:
-
-- `MLFLOW_TRACKING_URI`: MLflow server URL used by training, batch, and API code
-- `PREFECT_API_URL`: local Prefect API URL
-- `MLFLOW_MODEL_NAME`: registered model name that batch and online inference will resolve by default
-- `BATCH_INPUT_URI`: Parquet file scored in the batch chapter
+You also need **Docker Desktop** installed and running, and enough free disk space to pull the images used by the local stack.
 
 ## Check the environment before running Docker
 
 Run this command from the project root:
 
 ```bash
-python --version
-python -c "import fastapi, mlflow, prefect; print('Core imports look good.')"
+uv run python --version
+uv run python -c "import fastapi, mlflow, prefect; print('Core imports look good.')"
 ```
 
 You should see the active Python version and a short success message confirming that `FastAPI`, `MLflow` and `Prefect` all import correctly.
 
 ## Start the local services
 
-**`macOS`** / **`Linux`** / **`Git Bash`**
-
 ```bash
 mkdir -p storage/mlartifacts data/predictions
 docker compose -f infra/compose.yaml up -d
 ```
 
-**`PowerShell`**
-
-```powershell
-New-Item -ItemType Directory -Path storage/mlartifacts, data/predictions -Force
-docker compose -f infra/compose.yaml up -d
-```
-
-The first boot can take a minute because the `mlflow` and `prefect` containers install their runtime dependencies inside the container before starting the service process.
+The first boot can take a minute because the `mlflow` container installs its runtime dependencies inside the container before starting the service process.
 
 When the stack is running, you should have:
 
-- MLflow at `http://127.0.0.1:5001`
-- Prefect at `http://127.0.0.1:4200`
-- Postgres at `localhost:5432`
+- Postgres at <localhost:5432>
+- MLflow at <http://127.0.0.1:5001>
+- Prefect at <http://127.0.0.1:4200>
 
 If `docker compose -f infra/compose.yaml up -d` fails immediately, check that Docker Desktop is running before trying again.
 
@@ -144,16 +78,22 @@ You should also be able to see the running containers with:
 docker compose -f infra/compose.yaml ps
 ```
 
-## Run the training and batch steps (sanity check)
+## Sanity Check — Run the training and batch steps
 
 Run these commands from the project root:
 
 ```bash
-python -m src.training.train
-python -m src.batch.flow
+uv run python -m src.training.train
+uv run python -m src.batch.flow
 ```
 
-If both commands complete, the environment is ready for the notebooks. The batch command should create a Parquet file under `data/predictions/`.
+These two commands run the pipeline end to end, so they check what the `curl` and import checks above cannot: that a run and a model version reach Postgres, that the artifact store accepts the model, and that Prefect executes a flow.
+
+On a fresh stack, the **training** command registers `green-taxi-duration` version 1. Open the MLflow UI at <http://127.0.0.1:5001> to see the run and the registered model. Running Notebook 02 next registers version 2; each additional training run registers another version.
+
+The **batch** command scores the input file and writes a Parquet file under `data/predictions/`.
+
+If both commands complete, the environment is ready for the notebooks.
 
 ## What each service does
 
@@ -171,34 +111,4 @@ This stack keeps the focus on model lifecycle concepts:
 - repeatable batch scoring,
 - lightweight online inference.
 
-The next notebook uses the running MLflow server to train and register the first model version.
-
-## Cleanup
-
-When you are done for the day, stop the local services but keep the database volume and generated files:
-
-```bash
-docker compose -f infra/compose.yaml down
-```
-
-To fully reset the local state before rerunning the lessons from scratch:
-
-**`macOS`** / **`Linux`** / **`Git Bash`**
-
-```bash
-docker compose -f infra/compose.yaml down -v
-rm -rf data/predictions storage/mlartifacts .env
-mkdir -p data
-touch data/.gitkeep
-```
-
-**`PowerShell`**
-
-```powershell
-docker compose -f infra/compose.yaml down -v
-Remove-Item data/predictions, storage/mlartifacts, .env -Recurse -Force -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Path data -Force
-New-Item -ItemType File -Path data/.gitkeep -Force
-```
-
-This removes local MLflow artifacts, registered model metadata, Prefect run history, batch output files, and your copied `.env`.
+The next notebook uses the running MLflow server to train and register another model version.

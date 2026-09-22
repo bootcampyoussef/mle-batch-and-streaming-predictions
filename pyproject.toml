@@ -1,0 +1,28 @@
+[project]
+name = "mle-batch-and-stream-predictions"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.5.0",
+    "fastapi>=0.141.1",
+    "httpx2>=2.13.0",
+    "matplotlib>=3.11.2",
+    "mlflow>=3.16.1",
+    "pandas>=3.0.6",
+    "prefect>=3.8.6",
+    "psycopg2-binary>=2.9.13",
+    "pyarrow>=25.0.1",
+    "python-dotenv>=1.2.3",
+    "scikit-learn>=1.9.1",
+    "uvicorn[standard]>=0.53.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.3.0",
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

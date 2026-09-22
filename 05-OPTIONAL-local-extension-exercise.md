@@ -27,6 +27,7 @@ Improve the local pipeline so you can compare a stronger model against the linea
 - Good lightweight comparisons include a regularized linear model or a tree-based regressor.
 - Keep the metric consistent so the comparison is easy to interpret.
 - The active code resolves the prediction model from MLflow, so you can switch versions through the environment variables in `.env`.
+- After changing the model target, restart the API (or the kernel of notebook 04) to reload its configuration and cached model.
 
 ## Stretch Goal
 
