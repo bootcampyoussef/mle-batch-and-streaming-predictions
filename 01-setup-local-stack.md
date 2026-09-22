@@ -47,7 +47,7 @@ mkdir -p storage/mlartifacts data/predictions
 docker compose -f infra/compose.yaml up -d
 ```
 
-The first boot can take a minute because the `mlflow` and `prefect` containers install their runtime dependencies inside the container before starting the service process.
+The first boot can take a minute because the `mlflow` container installs its runtime dependencies inside the container before starting the service process.
 
 When the stack is running, you should have:
 
