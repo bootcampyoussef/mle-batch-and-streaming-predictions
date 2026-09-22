@@ -1,6 +1,6 @@
 import logging
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -50,12 +50,16 @@ class ProjectSettings:
         "BATCH_INPUT_URI",
         "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-02.parquet",
     )
-    batch_output_dir: Path = resolve_project_path(
-        os.getenv("BATCH_OUTPUT_DIR"), default=PROJECT_ROOT / "data" / "predictions"
+    batch_output_dir: Path = field(
+        default_factory=lambda: resolve_project_path(
+            os.getenv("BATCH_OUTPUT_DIR"), default=PROJECT_ROOT / "data" / "predictions"
+        )
     )
-    artifacts_dir: Path = resolve_project_path(
-        os.getenv("MLFLOW_ARTIFACTS_DIR"),
-        default=PROJECT_ROOT / "storage" / "mlartifacts",
+    artifacts_dir: Path = field(
+        default_factory=lambda: resolve_project_path(
+            os.getenv("MLFLOW_ARTIFACTS_DIR"),
+            default=PROJECT_ROOT / "storage" / "mlartifacts",
+        )
     )
 
 
