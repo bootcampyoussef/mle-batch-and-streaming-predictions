@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from src.common.config import get_settings
@@ -21,12 +21,12 @@ from src.common.model_registry import (
 # notebook runs attached to the local Prefect server defined in `.env`.
 os.environ.setdefault("PREFECT_API_URL", get_settings().prefect_api_url)
 
-from prefect import flow, get_run_logger, task  # noqa: E402
+from prefect import flow, get_run_logger, task
 
 
 def default_output_path(output_dir: Path) -> Path:
     """Create a timestamped Parquet path for one batch scoring run."""
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     return output_dir / f"batch_predictions_{timestamp}.parquet"
 
 

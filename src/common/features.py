@@ -1,8 +1,7 @@
 import uuid
-from typing import Iterable
+from collections.abc import Iterable
 
 import pandas as pd
-
 
 CATEGORICAL_COLUMNS = ["PULocationID", "DOLocationID"]
 FEATURE_COLUMNS = ["trip_route", "trip_distance"]
